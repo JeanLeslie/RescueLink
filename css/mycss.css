@@ -1,0 +1,22 @@
+.bg-login-image {
+    background: url(https://c4.wallpaperflare.com/wallpaper/167/899/648/colorful-abstract-digital-art-shapes-wallpaper-preview.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+.bg-register-image {
+    background: url(https://images.unsplash.com/photo-1612578397900-3e2ef04db208?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cmVzY3VlfGVufDB8fDB8fHww);
+    background-position: center;
+    background-size: cover;
+}
+
+form.user .form-select {
+    font-size: .8rem;
+    border-radius: 10rem;
+    /* padding: 1.5rem 1rem; */
+}
+.bg-password-image {
+    background: url(https://www.hdwallpapers.in/download/question_mark_hd_abstract-1366x768.jpg);
+    background-position: center;
+    background-size: cover;
+}
