@@ -1,3 +1,90 @@
+<?php
+    include('config/db_connect.php');
+    $email = $password = '';
+    $errors = array ('email'=>'','password'=>'','verify'=>'');
+    // print_r ($_POST['Email']);
+    // print_r ($_POST['Password']);
+    if($_SERVER['QUERY_STRING'] == 'incorrectlogin'){
+        $errors['verify'] = 'Incorrect Email/IP Address or Password.';
+    }
+    if($_SERVER['QUERY_STRING'] == 'norecords'){
+        $errors['verify'] = 'Not on system';
+    }
+    if (isset($_POST['submit'])) {
+        if(empty($_POST['Email'])){
+			$errors['email'] = 'An email is required';
+		} else{
+			$email = $_POST['Email'];
+			if((!filter_var($email, FILTER_VALIDATE_EMAIL))&&(!filter_var($email, FILTER_VALIDATE_IP))){
+				$errors['email'] = 'Must be a valid email address / IP Address';
+			}
+		}
+    }
+    if(empty($_POST['Password'])){
+        $errors['password'] = 'A Password is required';
+    }
+
+    if(array_filter($errors)){
+        //echo 'errors in form';
+    } else {
+        // escape sql chars
+        $email = mysqli_real_escape_string($conn, $_POST['Email']);
+        $password = mysqli_real_escape_string($conn, $_POST['Password']);
+
+        $sql = "SELECT * FROM devicestable WHERE (UserEmail='$email' OR IPAddress = '$email')AND Password='$password'";
+        
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) === 1) {
+
+            $row = mysqli_fetch_assoc($result);
+            print_r($row);
+
+            if ((($row['UserEmail'] === $email) || ($row['IPAddress'] === $email) ) && $row['Password'] === $password) {
+
+                $_SESSION['UserEmail'] = $row['UserEmail'];
+
+                $_SESSION['IPAddress'] = $row['IPAddress'];
+
+                $_SESSION['DevicesId'] = $row['DevicesId'];
+
+                // header("Location: views/dashboard.php");
+
+                exit();
+
+            }else{
+
+                header("Location: login.php?incorrectlogin");
+
+                exit();
+
+            }
+
+        }else{
+
+            header("Location: login.php?norecords");
+
+            exit();
+
+        }
+
+        // // create sql
+        // $sql_insert_device = "INSERT INTO devicestable
+        //                     (IPAddress, BarangayId, UserEmail, Password, StreetAddress,CreatedDateTime,DeviceName)
+        //                     Values
+        //                     ('$ip_add',$barangay,'$email','$password','$streetAddress', NOW(),NULL)";
+
+        // // save to db and check
+        // if(mysqli_query($conn, $sql_insert_device)){
+        //     // success
+        //     header('Location: login.php');
+        // } else {
+        //     echo 'query error: '. mysqli_error($conn);
+        // }
+
+        
+    }
+    mysqli_close($conn);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +95,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+ 
     <title>Rescue Link - Login</title>
 
     <!-- Custom fonts for this template-->
@@ -41,15 +128,19 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
-                                    <form class="user">
+                                    <form class="user" action="login.php" method="POST">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="exampleInputEmail" name="Email" aria-describedby="emailHelp"
+                                                placeholder="Enter Email Address..." required>
+                                            <span class="badge border-danger border-1 text-danger"><?php echo $errors['email']?></span>
                                         </div>
+
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                                id="exampleInputPassword" placeholder="Password" name="Password" required>
+                                        <span class="badge border-danger border-1 text-danger"><?php echo $errors['verify']?></span></br>
+                                        <span class="badge border-danger border-1 text-danger"><?php echo $errors['password']?></span>
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
@@ -58,9 +149,9 @@
                                                     Me</label>
                                             </div>
                                         </div>
-                                        <a href="index.html" class="btn btn-primary btn-user btn-block">
+                                        <button class="btn btn-primary btn-user btn-block" type="submit" name="submit" value="Submit">
                                             Login
-                                        </a>
+                                        </button>
                                         <!-- <hr>
                                         <a href="index.html" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Login with Google
