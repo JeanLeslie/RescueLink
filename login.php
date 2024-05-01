@@ -1,5 +1,6 @@
 <?php
     include('config/db_connect.php');
+    session_start();
     $email = $password = '';
     $errors = array ('email'=>'','password'=>'','verify'=>'');
     // print_r ($_POST['Email']);
@@ -41,13 +42,13 @@
 
             if ((($row['UserEmail'] === $email) || ($row['IPAddress'] === $email) ) && $row['Password'] === $password) {
 
-                $_SESSION['UserEmail'] = $row['UserEmail'];
+                ECHO $_SESSION['UserEmail'] = $row['UserEmail'];
 
-                $_SESSION['IPAddress'] = $row['IPAddress'];
+                ECHO $_SESSION['IPAddress'] = $row['IPAddress'];
 
-                $_SESSION['DevicesId'] = $row['DevicesId'];
+                ECHO $_SESSION['DevicesId'] = $row['DevicesId'];
 
-                // header("Location: views/dashboard.php");
+                header("Location: views/dashboard.php");
 
                 exit();
 
