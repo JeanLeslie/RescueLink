@@ -5,26 +5,8 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
     </div>
-    <div class="row justify-content-center">
-        <div class="col-lg-4 col-md-6">
-            <div class="card shadow border-left-danger mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-danger">FIRE</h6>
-                </div>
-                <div class="card-body">
-                    <div class="text-center">
-                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="min-height: 15rem; max-height: 15rem;" src="https://th.bing.com/th/id/OIP.FBOIcHl5qBN8SXsS-YUxaQHaFj?w=241&h=181&c=7&r=0&o=5&dpr=2.5&pid=1.7" alt="...">
-                    </div>
-                    <p><b>Date / Time: </b> 01 January 2024</br>
-                    <b>IP Address: </b>123.123.10.1</br>
-                    <b>Location: </b>Batangas City, Batangas</br>
-                    <b>Level: </b>01</br>
-                    </p>
-                    <!-- <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on
-                        unDraw →</a> -->
-                </div>
-            </div>
-        </div>
+    
+    <div class="row justify-content-center" id="divCardDetected">
     </div>
     <div class="row">
 
@@ -75,8 +57,8 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" id="dashboardTable">
+                    <thead >
                         <tr>
                             <th>Detected</th>
                             <th>Name</th>
@@ -96,7 +78,7 @@
                             <th>Status</th>
                         </tr>
                     </tfoot>
-                    <tbody>
+                    <tbody id="dashboardTbody">
                         <tr>
                             <td>Tiger Nixon</td>
                             <td>System Architect</td>
@@ -558,11 +540,64 @@
             </div>
         </div>
     </div>
-    
-
+    <div id="cardFireTemplate" style="display:none;">
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow border-left-danger mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-danger">FIRE</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center"style="min-height: 16rem">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="max-height: 15rem;" src="IMG_SOURCE" alt="...">
+                    </div>
+                    <p><b>Date / Time: </b> DateTime</br>
+                    <b>IP Address: </b>IPAddress</br>
+                    <b>Location: </b>Location_val</br>
+                    <b>Level: </b>Level_value</br>
+                    </p>
+                    <!-- <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on
+                        unDraw →</a> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="cardSmokeTemplate"  style="display:none;">
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow border-left-success mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-success">Smoke</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center" style="min-height: 16rem">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style=" max-height: 15rem;" src="IMG_SOURCE" alt="...">
+                    </div>
+                    <p><b>Date / Time: </b> DateTime</br>
+                    <b>IP Address: </b>IPAddress</br>
+                    <b>Location: </b>Location_val</br>
+                    <b>Level: </b>Level_value</br>
+                    </p>
+                    <!-- <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on
+                        unDraw →</a> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0"   style="display:none;">
+        <tbody id="dashboardTbodyTemplate">
+            <tr class="odd_even bg-detect">
+                <td class="sorting_1">Detection</td>
+                <td>DeviceName</td>
+                <td>IPAddress</td>
+                <td>Location</td>
+                <td>StartDate</td>
+                <td>Status</td>
+            </tr>
+        </tbody>
+    <table>
     <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+    <script src="../js/demo/datatables-demo.js"></script>
+    <script src= "../js/dashboard.js"></script>
 </section>

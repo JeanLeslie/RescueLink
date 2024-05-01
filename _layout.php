@@ -350,7 +350,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <button class="btn btn-primary" onclick="logout()">Logout</button>
                 </div>
             </div>
         </div>
@@ -385,6 +385,28 @@
                 });
             });
         });
+        
+        function logout(){
+                // Call a PHP script via AJAX when button is clicked
+                $.ajax({
+                    url: '../logout.php', // Path to your PHP script
+                    type: 'POST', // HTTP method
+                    data: {clicked: true}, // Data to send to the server
+                    
+                    success: function(response){
+                        // Close the modal after successful logout
+                        $('#logoutModal').modal('hide');
+
+                        // Redirect to another page after successful logout
+                        window.location.href = "../login.php";
+                    },
+
+                    error: function(xhr, status, error){
+                        // Handle errors
+                        console.error(xhr.responseText);
+                    }
+                });
+            };
     </script>
 </body>
 

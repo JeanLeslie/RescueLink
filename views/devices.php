@@ -27,7 +27,7 @@
                             <th>Location</th>
                         </tr>
                     </tfoot>
-                    <tbody>
+                    <tbody id="devicesTableTbody">
                         <tr>
                             <td>Tiger Nixon</td>
                             <td>System Architect</td>
@@ -96,3 +96,15 @@
         </div>
     </div>
 </section>
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0"  style="display:none;">
+    <tbody id="devicesTableTbodyTemplate">
+        <tr class="odd_even">
+            <td class="sorting_1">Number</td>
+            <td>DeviceName</td>
+            <td>IPAddress</td>
+            <td>Location_val</td>
+            
+        </tr>
+    </tbody>
+</table>
+<script src= "../js/devices.js"></script>

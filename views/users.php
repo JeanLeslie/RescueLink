@@ -27,7 +27,7 @@
                             <th>IP Address</th>
                         </tr>
                     </tfoot>
-                    <tbody>
+                    <tbody id="usersTableTbody">
                         <tr>
                             <td>Tiger Nixon</td>
                             <td>System Architect</td>
@@ -96,3 +96,15 @@
         </div>
     </div>
 </section>
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="display:none;">
+    <tbody id="usersTableTbodyTemplate">
+        <tr class="odd_even">
+            <td class="sorting_1">Number</td>
+            <td>EmailAdd</td>
+            <td>DeviceName</td>
+            <td>IPAddress</td>
+            
+        </tr>
+    </tbody>
+</table>
+<script src= "../js/users.js"></script>
