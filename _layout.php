@@ -62,35 +62,36 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
+            <div id="divAdminPages" style="display:none;">
             <!-- Heading -->
-            <div class="sidebar-heading">
-                PAGES
+                <div class="sidebar-heading">
+                    PAGES
+                </div>
+
+                <!-- Nav Item - Tables -->
+                <li class="nav-item">
+                    <a class="nav-link" href="detection.php">
+                    <i class="fas fa-fw fa-solid fa-eye"></i>
+                        <span>Detections</span></a>
+                </li>
+
+                <!-- Nav Item - Tables -->
+                <li class="nav-item">
+                    <a class="nav-link" href="devices.php">
+                    <i class="fas fa-fw fa-solid fa-house-laptop"></i>
+                        <span>Devices</span></a>
+                </li>
+
+                <!-- Nav Item - Tables -->
+                <li class="nav-item">
+                    <a class="nav-link" href="users.php">
+                    <i class="fas fa-fw fa-solid fa-users"></i>
+                        <span>Users</span></a>
+                </li>
+                
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
             </div>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="detection.php">
-                <i class="fas fa-fw fa-solid fa-eye"></i>
-                    <span>Detections</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="devices.php">
-                <i class="fas fa-fw fa-solid fa-house-laptop"></i>
-                    <span>Devices</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="users.php">
-                <i class="fas fa-fw fa-solid fa-users"></i>
-                    <span>Users</span></a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -384,6 +385,10 @@
                     }
                 });
             });
+
+            if (<?php echo $_SESSION['IsAdmin']; ?>){
+                $('#divAdminPages').show('fast');
+            }
         });
         
         function logout(){
