@@ -8,6 +8,7 @@
     if($_SERVER['QUERY_STRING'] == 'incorrectlogin'){
         $errors['verify'] = 'Incorrect Email/IP Address or Password.';
     }
+
     if($_SERVER['QUERY_STRING'] == 'norecords'){
         $errors['verify'] = 'Not on system';
     }
@@ -33,20 +34,42 @@
         $password = mysqli_real_escape_string($conn, $_POST['Password']);
 
         $sql = "SELECT * FROM devicestable WHERE (UserEmail='$email' OR IPAddress = '$email')AND Password='$password'";
+        $sql_admin = "SELECT * FROM admins WHERE (Username='$email') AND Password='$password';";
+        // echo '<script> alert("'.$sql_admin.'")</script> ';
         
         $result = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($result) === 1) {
+        $result_admin = mysqli_query($conn, $sql_admin);
+        // echo '<script> alert('.mysqli_num_rows($result_admin).')</script> ';
+        if (mysqli_num_rows($result_admin) === 1) {
+            
+            $row_admin = mysqli_fetch_assoc($result_admin);
+
+            
+            echo '<script> alert("hey: '.print_r($row_admin).'")</script> ';
+
+            if (($row_admin['Username'] === $email) && $row_admin['Password'] === $password) {
+                $_SESSION['UserEmail'] = $row_admin['Username'];
+                $_SESSION['IsAdmin'] = true;
+                header("Location: views/dashboard.php");
+
+                exit();
+
+            }
+        }
+        elseif (mysqli_num_rows($result) === 1) {
 
             $row = mysqli_fetch_assoc($result);
             print_r($row);
 
             if ((($row['UserEmail'] === $email) || ($row['IPAddress'] === $email) ) && $row['Password'] === $password) {
 
-                ECHO $_SESSION['UserEmail'] = $row['UserEmail'];
+                $_SESSION['UserEmail'] = $row['UserEmail'];
 
-                ECHO $_SESSION['IPAddress'] = $row['IPAddress'];
+                $_SESSION['IPAddress'] = $row['IPAddress'];
 
-                ECHO $_SESSION['DevicesId'] = $row['DevicesId'];
+                $_SESSION['DevicesId'] = $row['DevicesId'];
+
+                $_SESSION['IsAdmin'] = false;
 
                 header("Location: views/dashboard.php");
 
