@@ -1,5 +1,8 @@
 <?php
     session_start();
+    $IsAdmin = $_SESSION['IsAdmin'] ? 'true' : 'false';
+    
+   
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -385,8 +388,9 @@
                     }
                 });
             });
-
-            if (<?php echo $_SESSION['IsAdmin']; ?>){
+            
+            <?php  echo 'var IsAdmin=' .$IsAdmin.';';?>
+            if (IsAdmin){
                 $('#divAdminPages').show('fast');
             }
         });
