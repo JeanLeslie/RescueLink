@@ -14,6 +14,9 @@ $.ajax({
             
             
             $('#usersTableTbody').append(row)
+            $('#usersTable').DataTable({
+                "order": [[ 0, "desc" ]] // Sorts the first column (index 0) in descending order
+            }).draw();
         });
     },
     error: function (xhr, ajaxOptions, thrownError) {
