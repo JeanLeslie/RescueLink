@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 01, 2024 at 03:00 AM
+-- Generation Time: May 08, 2024 at 12:41 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,6 +33,33 @@ CREATE TABLE `admins` (
   `Username` varchar(100) NOT NULL,
   `Password` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admins`
+--
+
+INSERT INTO `admins` (`AdminId`, `Name`, `Username`, `Password`) VALUES
+(1, 'Admin Rescuelink', 'adm.rescuelink@gmail.com', 'RLAdmin@2024');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `detectionstatuses`
+--
+
+CREATE TABLE `detectionstatuses` (
+  `DetectionStatusId` int(11) NOT NULL,
+  `StatusCode` varchar(10) NOT NULL,
+  `Status` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `detectionstatuses`
+--
+
+INSERT INTO `detectionstatuses` (`DetectionStatusId`, `StatusCode`, `Status`) VALUES
+(3, 'OG', 'On-going'),
+(4, 'F', 'Finished');
 
 -- --------------------------------------------------------
 
@@ -66,8 +93,17 @@ CREATE TABLE `devicerecords` (
   `DetectedDateTime` datetime NOT NULL,
   `TypeId` int(11) NOT NULL,
   `DeviceId` int(11) NOT NULL,
-  `ImageLink` varchar(255) NOT NULL
+  `ImageLink` varchar(255) NOT NULL,
+  `DetectionStatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `devicerecords`
+--
+
+INSERT INTO `devicerecords` (`RecordId`, `DetectedDateTime`, `TypeId`, `DeviceId`, `ImageLink`, `DetectionStatusId`) VALUES
+(1, '2024-05-01 10:40:27', 2, 2, 'https://drive.google.com/file/d/1pD0dF3_6h_fylKrzBpcbZ8LDKz7seZ3a/view?usp=sharing', 4),
+(2, '2024-05-07 16:53:42', 2, 4, 'https://drive.google.com/file/d/1oBR4Aw5hImH3z_iNBlcpjZP4339YfaLy/view?usp=drive_link', 3);
 
 -- --------------------------------------------------------
 
@@ -91,7 +127,8 @@ CREATE TABLE `devicestable` (
 --
 
 INSERT INTO `devicestable` (`DevicesId`, `IPAddress`, `BarangayId`, `UserEmail`, `Password`, `StreetAddress`, `CreatedDateTime`, `DeviceName`) VALUES
-(2, '192.168.1.9', 9151, 'jeanleslie.jlr@gmail.com', 'RECON', '2C', '2024-05-01 05:43:21', NULL);
+(2, '192.168.1.9', 9151, 'jeanleslie.jlr@gmail.com', 'RECON', '2C', '2024-05-01 05:43:21', NULL),
+(4, '192.168.1.66', 8836, 'userAAA@gmail.com', 'userAAA1234', 'Maselang St.', '2024-05-01 18:32:09', NULL);
 
 -- --------------------------------------------------------
 
@@ -43980,6 +44017,12 @@ ALTER TABLE `admins`
   ADD KEY `IX_Admins_Password` (`Password`);
 
 --
+-- Indexes for table `detectionstatuses`
+--
+ALTER TABLE `detectionstatuses`
+  ADD PRIMARY KEY (`DetectionStatusId`);
+
+--
 -- Indexes for table `detectiontypes`
 --
 ALTER TABLE `detectiontypes`
@@ -43996,7 +44039,8 @@ ALTER TABLE `devicerecords`
   ADD KEY `IX_DeviceRecords_DetectedDateTime` (`DetectedDateTime`),
   ADD KEY `IX_DeviceRecords_TypeId` (`TypeId`),
   ADD KEY `IX_DeviceRecords_DeviceId` (`DeviceId`),
-  ADD KEY `IX_DeviceRecords_ImageLink` (`ImageLink`);
+  ADD KEY `IX_DeviceRecords_ImageLink` (`ImageLink`),
+  ADD KEY `IX_DeviceRecords_DeviceStatusId` (`DetectionStatusId`);
 
 --
 -- Indexes for table `devicestable`
@@ -44051,7 +44095,13 @@ ALTER TABLE `table_region`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `AdminId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `AdminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `detectionstatuses`
+--
+ALTER TABLE `detectionstatuses`
+  MODIFY `DetectionStatusId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `detectiontypes`
@@ -44063,13 +44113,13 @@ ALTER TABLE `detectiontypes`
 -- AUTO_INCREMENT for table `devicerecords`
 --
 ALTER TABLE `devicerecords`
-  MODIFY `RecordId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `RecordId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `devicestable`
 --
 ALTER TABLE `devicestable`
-  MODIFY `DevicesId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `DevicesId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `table_barangay`
@@ -44104,7 +44154,8 @@ ALTER TABLE `table_region`
 --
 ALTER TABLE `devicerecords`
   ADD CONSTRAINT `devicerecords_ibfk_1` FOREIGN KEY (`DeviceId`) REFERENCES `devicestable` (`DevicesId`),
-  ADD CONSTRAINT `devicerecords_ibfk_2` FOREIGN KEY (`TypeId`) REFERENCES `detectiontypes` (`DetectionTypeId`);
+  ADD CONSTRAINT `devicerecords_ibfk_2` FOREIGN KEY (`TypeId`) REFERENCES `detectiontypes` (`DetectionTypeId`),
+  ADD CONSTRAINT `devicerecords_ibfk_3` FOREIGN KEY (`DetectionStatusId`) REFERENCES `detectionstatuses` (`DetectionStatusId`);
 
 --
 -- Constraints for table `devicestable`
