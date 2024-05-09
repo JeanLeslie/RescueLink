@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 08, 2024 at 12:41 PM
+-- Generation Time: May 09, 2024 at 01:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,26 +44,6 @@ INSERT INTO `admins` (`AdminId`, `Name`, `Username`, `Password`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `detectionstatuses`
---
-
-CREATE TABLE `detectionstatuses` (
-  `DetectionStatusId` int(11) NOT NULL,
-  `StatusCode` varchar(10) NOT NULL,
-  `Status` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `detectionstatuses`
---
-
-INSERT INTO `detectionstatuses` (`DetectionStatusId`, `StatusCode`, `Status`) VALUES
-(3, 'OG', 'On-going'),
-(4, 'F', 'Finished');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `detectiontypes`
 --
 
@@ -94,16 +74,26 @@ CREATE TABLE `devicerecords` (
   `TypeId` int(11) NOT NULL,
   `DeviceId` int(11) NOT NULL,
   `ImageLink` varchar(255) NOT NULL,
-  `DetectionStatusId` int(11) NOT NULL
+  `DetectionStatusId` int(11) NOT NULL,
+  `ModifiedDateTime` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `devicerecords`
 --
 
-INSERT INTO `devicerecords` (`RecordId`, `DetectedDateTime`, `TypeId`, `DeviceId`, `ImageLink`, `DetectionStatusId`) VALUES
-(1, '2024-05-01 10:40:27', 2, 2, 'https://drive.google.com/file/d/1pD0dF3_6h_fylKrzBpcbZ8LDKz7seZ3a/view?usp=sharing', 4),
-(2, '2024-05-07 16:53:42', 2, 4, 'https://drive.google.com/file/d/1oBR4Aw5hImH3z_iNBlcpjZP4339YfaLy/view?usp=drive_link', 3);
+INSERT INTO `devicerecords` (`RecordId`, `DetectedDateTime`, `TypeId`, `DeviceId`, `ImageLink`, `DetectionStatusId`, `ModifiedDateTime`) VALUES
+(1, '2024-05-01 03:25:20', 2, 2, 'https://drive.google.com/file/d/1pD0dF3_6h_fylKrzBpcbZ8LDKz7seZ3a/view?usp=sharing', 4, '2024-05-09 19:33:35'),
+(2, '2024-05-01 03:26:04', 2, 2, 'https://drive.google.com/file/d/1pD0dF3_6h_fylKrzBpcbZ8LDKz7seZ3a/view?usp=sharing', 4, '2024-05-09 19:22:36'),
+(3, '2024-05-01 03:26:50', 1, 2, 'https://drive.google.com/file/d/1f5uoCHqiiDDeEkUKoyFNUN9YkZEzePuY/view?usp=sharing', 3, '2024-05-09 19:22:36'),
+(4, '2024-05-07 16:53:42', 2, 4, 'https://drive.google.com/file/d/1SBzkURkO_4LCWIzOE0KjfFXutXiyUexu/view?usp=drive_link', 4, '2024-05-09 19:34:11'),
+(6, '2024-05-08 22:44:20', 1, 4, 'https://c1.wallpaperflare.com/preview/14/36/31/fire-smoke-flame-black.jpg', 4, '2024-05-09 19:22:36'),
+(7, '2024-05-08 22:44:20', 1, 4, 'https://c1.wallpaperflare.com/preview/14/36/31/fire-smoke-flame-black.jpg', 4, '2024-05-09 19:22:36'),
+(8, '2024-05-08 22:49:59', 2, 4, 'https://static.vecteezy.com/system/resources/thumbnails/019/368/239/small/abstract-orange-fiery-sparks-and-smoke-from-a-bonfire-with-fire-abstract-background-4k-motion-design-video.jpg', 4, '2024-05-09 19:22:36'),
+(10, '2024-05-08 22:54:18', 1, 4, 'https://static.vecteezy.com/system/resources/thumbnails/019/368/239/small/abstract-orange-fiery-sparks-and-smoke-from-a-bonfire-with-fire-abstract-background-4k-motion-design-video.jpg', 4, '2024-05-09 19:22:36'),
+(11, '2024-05-09 18:43:49', 1, 2, 'https://drive.google.com/file/d/12gRDdBpPLNHCZQAWVYhdJTzTkGbex39A/view?usp=sharing', 4, '2024-05-09 19:22:36'),
+(12, '2024-05-09 18:50:29', 1, 2, 'https://drive.google.com/file/d/12gRDdBpPLNHCZQAWVYhdJTzTkGbex39A/view?usp=sharing', 3, '2024-05-09 19:22:36'),
+(13, '2024-05-09 19:05:41', 1, 2, 'https://drive.google.com/file/d/1tC7f78j-b6vXJkKVv98lPL-H0hWcV2kl/view?usp=sharing', 3, '2024-05-09 19:22:36');
 
 -- --------------------------------------------------------
 
@@ -44017,12 +44007,6 @@ ALTER TABLE `admins`
   ADD KEY `IX_Admins_Password` (`Password`);
 
 --
--- Indexes for table `detectionstatuses`
---
-ALTER TABLE `detectionstatuses`
-  ADD PRIMARY KEY (`DetectionStatusId`);
-
---
 -- Indexes for table `detectiontypes`
 --
 ALTER TABLE `detectiontypes`
@@ -44040,7 +44024,8 @@ ALTER TABLE `devicerecords`
   ADD KEY `IX_DeviceRecords_TypeId` (`TypeId`),
   ADD KEY `IX_DeviceRecords_DeviceId` (`DeviceId`),
   ADD KEY `IX_DeviceRecords_ImageLink` (`ImageLink`),
-  ADD KEY `IX_DeviceRecords_DeviceStatusId` (`DetectionStatusId`);
+  ADD KEY `IX_DeviceRecords_DeviceStatusId` (`DetectionStatusId`),
+  ADD KEY `IX_DeviceRecords_ModifiedDateTime` (`ModifiedDateTime`);
 
 --
 -- Indexes for table `devicestable`
@@ -44098,12 +44083,6 @@ ALTER TABLE `admins`
   MODIFY `AdminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `detectionstatuses`
---
-ALTER TABLE `detectionstatuses`
-  MODIFY `DetectionStatusId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
 -- AUTO_INCREMENT for table `detectiontypes`
 --
 ALTER TABLE `detectiontypes`
@@ -44113,7 +44092,7 @@ ALTER TABLE `detectiontypes`
 -- AUTO_INCREMENT for table `devicerecords`
 --
 ALTER TABLE `devicerecords`
-  MODIFY `RecordId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `RecordId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `devicestable`
