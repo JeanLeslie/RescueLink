@@ -305,7 +305,7 @@
                     data: { province_id: provinceId },
                     dataType: 'json',
                     success: function(response) {
-                        console.log('cities',response)
+                        // console.log('cities',response)
                         var select = $('#location_city');
                     
                         select.empty().append('<option selected="">City*</option>');
@@ -335,7 +335,7 @@
                     data: { municipality_id: cityId },
                     dataType: 'json',
                     success: function(response) {
-                        console.log('barangay',response)
+                        // console.log('barangay',response)
                         var select = $('#location_barangay');
                     
                         select.empty().append('<option selected="">Barangay*</option>');

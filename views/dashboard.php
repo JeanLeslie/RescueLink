@@ -97,7 +97,7 @@ $title = 'Rescue Link - Dashboard' ;
     
     <div id="cardFireTemplate" style="display:none;">
         <!-- <div class="col-lg-4 col-md-6"> -->
-            <div class="card shadow border-left-danger mb-4">
+            <div class="card shadow border-left-danger mb-4 mx-3">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-danger">FIRE</h6>
                 </div>
@@ -118,7 +118,7 @@ $title = 'Rescue Link - Dashboard' ;
     </div>
     <div id="cardSmokeTemplate"  style="display:none;">
         <!-- <div class="col-lg-4 col-md-6"> -->
-            <div class="card shadow border-left-success mb-4">
+            <div class="card shadow border-left-success mb-4 mx-3">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-success">Smoke</h6>
                 </div>

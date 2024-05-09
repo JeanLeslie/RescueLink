@@ -11,7 +11,7 @@ function dashboardTableAndCards(){
             var smokeOG = false;
             // select.empty().append('<option selected="">Barangay*</option>');
             $.each(response, function(i, field) {
-                console.log(field)
+                // console.log(field)
                 var row = $('#dashboardTbodyTemplate').html()
                 row = row.replace('odd_even',i%2 ? 'even': 'odd')
                 if (field.StatusCode == 'OG'){
@@ -63,8 +63,9 @@ function dashboardTableAndCards(){
                     if (match) {
                         // Extract the desired substring after 'drive.google.com/file/d/'
                         var fileId = match[1]; // The captured group ([^\/]+) contains the fileId
-                        console.log("File ID:", fileId);
-                        row = row.replace('IMG_SOURCE','https://drive.google.com/thumbnail?id='+fileId+'&sz=w1000')
+                        // console.log("File ID:", fileId);
+                        // row = row.replace('IMG_SOURCE','https://drive.google.com/thumbnail?id='+fileId+'&sz=w1000')
+                        row = row.replace('IMG_SOURCE','https://lh3.googleusercontent.com/d/'+fileId+'=w1000')
                     } else {
                         console.log("No match found.");
                         row = row.replace('IMG_SOURCE',field.ImageLink)
@@ -99,18 +100,38 @@ function checkForNewRecords() {
         url: '../controllers/check_new_records.php', // URL of your server-side script
         method: 'GET',
         success: function(response) {
-            console.log(response);
             if (response === 'true') {
                 // There are new records, perform your desired action
                 dashboardTableAndCards()
                 
                 playSound(); //try 
                
-                console.log('New records found!');
+                // console.log('New records found!');
                 // For example, you could update the UI or display a notification
             } else if (response === 'false') {
                 // No new records
-                console.log('No new records');
+                // console.log('No new records');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+}
+function checkForUpdates() {
+    $.ajax({
+        url: '../controllers/check_updates_records.php', // URL of your server-side script
+        method: 'GET',
+        success: function(response) {
+            if (response === 'true') {
+                // There are new records, perform your desired action
+                dashboardTableAndCards()
+               
+                // console.log('New updates found!');
+                // For example, you could update the UI or display a notification
+            } else if (response === 'false') {
+                // No new records
+                // console.log('No new updates');
             }
         },
         error: function(xhr, status, error) {
@@ -123,3 +144,4 @@ checkForNewRecords();
 
 // Set an interval to periodically check for new records (every 5 seconds in this example)
 setInterval(checkForNewRecords, 5000); // Adjust the interval as needed
+setInterval(checkForUpdates, 5000); // Adjust the interval as needed

@@ -8,11 +8,7 @@ if ($conn === false) {
 }
 
 // Query to check for new records
-$sql = "SELECT COUNT(*) AS new_records FROM devicerecords WHERE DetectedDateTime > DATE_SUB(NOW(), INTERVAL 5 SECOND)";
-if(isset($_SESSION['DevicesId']) && is_numeric($_SESSION['DevicesId'])) {
-    $deviceId = mysqli_real_escape_string($conn, $_SESSION['DevicesId']);
-    $sql .= " AND DeviceId = '$deviceId'";
-}
+$sql = "SELECT COUNT(*) AS new_records FROM devicestable WHERE CreatedDateTime > DATE_SUB(NOW(), INTERVAL 5 SECOND)";
 $result = mysqli_query($conn, $sql);
 
 if ($result === false) {
