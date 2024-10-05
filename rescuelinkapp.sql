@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 09, 2024 at 01:46 PM
+-- Generation Time: Oct 05, 2024 at 02:38 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,6 +44,26 @@ INSERT INTO `admins` (`AdminId`, `Name`, `Username`, `Password`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `detectionstatuses`
+--
+
+CREATE TABLE `detectionstatuses` (
+  `DetectionStatusId` int(11) NOT NULL,
+  `StatusCode` varchar(10) NOT NULL,
+  `Status` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `detectionstatuses`
+--
+
+INSERT INTO `detectionstatuses` (`DetectionStatusId`, `StatusCode`, `Status`) VALUES
+(3, 'OG', 'On-going'),
+(4, 'F', 'Finished');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `detectiontypes`
 --
 
@@ -51,6 +71,8 @@ CREATE TABLE `detectiontypes` (
   `DetectionTypeId` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Description` varchar(255) DEFAULT NULL,
+  `PingCode` char(2) DEFAULT NULL,
+  `Color` varchar(255) NOT NULL,
   `CreateDateTime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -58,9 +80,11 @@ CREATE TABLE `detectiontypes` (
 -- Dumping data for table `detectiontypes`
 --
 
-INSERT INTO `detectiontypes` (`DetectionTypeId`, `Name`, `Description`, `CreateDateTime`) VALUES
-(1, 'Fire', 'When fire is detected', '2024-04-26 00:32:49'),
-(2, 'Smoke', 'When smoke is detected', '2024-04-26 00:32:49');
+INSERT INTO `detectiontypes` (`DetectionTypeId`, `Name`, `Description`, `PingCode`, `Color`, `CreateDateTime`) VALUES
+(1, 'Fire', 'No Smoke, Fire is Present', '01', 'fire', '2024-04-26 00:32:49'),
+(2, 'Smoke', 'Smoke is Present, No Fire Detected.', '10', 'smoke', '2024-04-26 00:32:49'),
+(7, 'None', 'No Smoke and No Fire Detected.', '00', 'none', '2024-10-03 17:52:08'),
+(8, 'SmokeFire', 'Smoke and Fire is Present.', '11', 'smokefire', '2024-10-03 17:52:08');
 
 -- --------------------------------------------------------
 
@@ -73,7 +97,7 @@ CREATE TABLE `devicerecords` (
   `DetectedDateTime` datetime NOT NULL,
   `TypeId` int(11) NOT NULL,
   `DeviceId` int(11) NOT NULL,
-  `ImageLink` varchar(255) NOT NULL,
+  `ImageLink` varchar(255) DEFAULT NULL,
   `DetectionStatusId` int(11) NOT NULL,
   `ModifiedDateTime` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -85,15 +109,143 @@ CREATE TABLE `devicerecords` (
 INSERT INTO `devicerecords` (`RecordId`, `DetectedDateTime`, `TypeId`, `DeviceId`, `ImageLink`, `DetectionStatusId`, `ModifiedDateTime`) VALUES
 (1, '2024-05-01 03:25:20', 2, 2, 'https://drive.google.com/file/d/1pD0dF3_6h_fylKrzBpcbZ8LDKz7seZ3a/view?usp=sharing', 4, '2024-05-09 19:33:35'),
 (2, '2024-05-01 03:26:04', 2, 2, 'https://drive.google.com/file/d/1pD0dF3_6h_fylKrzBpcbZ8LDKz7seZ3a/view?usp=sharing', 4, '2024-05-09 19:22:36'),
-(3, '2024-05-01 03:26:50', 1, 2, 'https://drive.google.com/file/d/1f5uoCHqiiDDeEkUKoyFNUN9YkZEzePuY/view?usp=sharing', 3, '2024-05-09 19:22:36'),
+(3, '2024-05-01 03:26:50', 1, 2, 'https://drive.google.com/file/d/1f5uoCHqiiDDeEkUKoyFNUN9YkZEzePuY/view?usp=sharing', 4, '2024-05-09 19:22:36'),
 (4, '2024-05-07 16:53:42', 2, 4, 'https://drive.google.com/file/d/1SBzkURkO_4LCWIzOE0KjfFXutXiyUexu/view?usp=drive_link', 4, '2024-05-09 19:34:11'),
 (6, '2024-05-08 22:44:20', 1, 4, 'https://c1.wallpaperflare.com/preview/14/36/31/fire-smoke-flame-black.jpg', 4, '2024-05-09 19:22:36'),
 (7, '2024-05-08 22:44:20', 1, 4, 'https://c1.wallpaperflare.com/preview/14/36/31/fire-smoke-flame-black.jpg', 4, '2024-05-09 19:22:36'),
 (8, '2024-05-08 22:49:59', 2, 4, 'https://static.vecteezy.com/system/resources/thumbnails/019/368/239/small/abstract-orange-fiery-sparks-and-smoke-from-a-bonfire-with-fire-abstract-background-4k-motion-design-video.jpg', 4, '2024-05-09 19:22:36'),
 (10, '2024-05-08 22:54:18', 1, 4, 'https://static.vecteezy.com/system/resources/thumbnails/019/368/239/small/abstract-orange-fiery-sparks-and-smoke-from-a-bonfire-with-fire-abstract-background-4k-motion-design-video.jpg', 4, '2024-05-09 19:22:36'),
 (11, '2024-05-09 18:43:49', 1, 2, 'https://drive.google.com/file/d/12gRDdBpPLNHCZQAWVYhdJTzTkGbex39A/view?usp=sharing', 4, '2024-05-09 19:22:36'),
-(12, '2024-05-09 18:50:29', 1, 2, 'https://drive.google.com/file/d/12gRDdBpPLNHCZQAWVYhdJTzTkGbex39A/view?usp=sharing', 3, '2024-05-09 19:22:36'),
-(13, '2024-05-09 19:05:41', 1, 2, 'https://drive.google.com/file/d/1tC7f78j-b6vXJkKVv98lPL-H0hWcV2kl/view?usp=sharing', 3, '2024-05-09 19:22:36');
+(12, '2024-05-09 18:50:29', 1, 2, 'https://drive.google.com/file/d/12gRDdBpPLNHCZQAWVYhdJTzTkGbex39A/view?usp=sharing', 4, '2024-05-09 19:22:36'),
+(13, '2024-05-09 19:05:41', 1, 2, 'https://drive.google.com/file/d/1tC7f78j-b6vXJkKVv98lPL-H0hWcV2kl/view?usp=sharing', 4, '2024-05-09 19:22:36'),
+(14, '2024-10-04 00:13:35', 8, 2, NULL, 4, NULL),
+(15, '2024-10-04 00:13:40', 7, 2, NULL, 4, NULL),
+(116, '2024-10-05 20:04:41', 7, 6, NULL, 3, NULL),
+(117, '2024-10-05 20:07:54', 1, 6, NULL, 3, NULL),
+(118, '2024-10-05 20:08:09', 2, 6, NULL, 3, NULL),
+(119, '2024-10-05 20:08:19', 8, 6, NULL, 3, NULL),
+(120, '2024-10-05 20:08:30', 7, 6, NULL, 3, NULL),
+(121, '2024-10-05 20:08:40', 1, 6, NULL, 3, NULL),
+(122, '2024-10-05 20:08:50', 2, 6, NULL, 3, NULL),
+(123, '2024-10-05 20:14:24', 1, 6, NULL, 3, NULL),
+(124, '2024-10-05 20:14:34', 2, 6, NULL, 3, NULL),
+(125, '2024-10-05 20:14:44', 8, 6, NULL, 3, NULL),
+(126, '2024-10-05 20:14:54', 7, 6, NULL, 3, NULL),
+(127, '2024-10-05 20:16:03', 1, 6, NULL, 3, NULL),
+(128, '2024-10-05 20:16:33', 2, 6, NULL, 3, NULL),
+(129, '2024-10-05 20:17:03', 8, 6, NULL, 3, NULL),
+(130, '2024-10-05 20:17:33', 7, 6, NULL, 3, NULL),
+(131, '2024-10-05 20:18:04', 1, 6, NULL, 3, NULL),
+(132, '2024-10-05 20:18:34', 2, 6, NULL, 3, NULL),
+(133, '2024-10-05 20:19:05', 8, 6, NULL, 3, NULL),
+(134, '2024-10-05 20:19:35', 7, 6, NULL, 3, NULL),
+(135, '2024-10-05 20:20:05', 1, 6, NULL, 3, NULL),
+(136, '2024-10-05 20:20:35', 2, 6, NULL, 3, NULL),
+(137, '2024-10-05 20:21:05', 8, 6, NULL, 3, NULL),
+(138, '2024-10-05 20:21:36', 7, 6, NULL, 3, NULL),
+(139, '2024-10-05 20:22:06', 1, 6, NULL, 3, NULL),
+(140, '2024-10-05 20:22:36', 2, 6, NULL, 3, NULL),
+(141, '2024-10-05 20:23:06', 8, 6, NULL, 3, NULL),
+(142, '2024-10-05 20:23:36', 7, 6, NULL, 3, NULL),
+(143, '2024-10-05 20:24:37', 1, 6, NULL, 3, NULL),
+(144, '2024-10-05 20:24:38', 2, 6, NULL, 3, NULL),
+(145, '2024-10-05 20:24:39', 8, 6, NULL, 3, NULL),
+(146, '2024-10-05 20:24:45', 7, 6, NULL, 3, NULL),
+(147, '2024-10-05 20:24:47', 1, 6, NULL, 3, NULL),
+(148, '2024-10-05 20:24:48', 2, 6, NULL, 3, NULL),
+(149, '2024-10-05 20:24:49', 8, 6, NULL, 3, NULL),
+(150, '2024-10-05 20:24:55', 7, 6, NULL, 3, NULL),
+(151, '2024-10-05 20:24:57', 1, 6, NULL, 3, NULL),
+(152, '2024-10-05 20:24:58', 2, 6, NULL, 3, NULL),
+(153, '2024-10-05 20:24:59', 8, 6, NULL, 3, NULL),
+(154, '2024-10-05 20:25:05', 7, 6, NULL, 3, NULL),
+(155, '2024-10-05 20:25:07', 1, 6, NULL, 3, NULL),
+(156, '2024-10-05 20:25:08', 2, 6, NULL, 3, NULL),
+(157, '2024-10-05 20:25:09', 8, 6, NULL, 3, NULL),
+(158, '2024-10-05 20:25:16', 7, 6, NULL, 3, NULL),
+(159, '2024-10-05 20:25:17', 1, 6, NULL, 3, NULL),
+(160, '2024-10-05 20:25:18', 2, 6, NULL, 3, NULL),
+(161, '2024-10-05 20:25:19', 8, 6, NULL, 3, NULL),
+(162, '2024-10-05 20:25:26', 7, 6, NULL, 3, NULL),
+(163, '2024-10-05 20:25:27', 1, 6, NULL, 3, NULL),
+(164, '2024-10-05 20:25:28', 2, 6, NULL, 3, NULL),
+(165, '2024-10-05 20:25:29', 8, 6, NULL, 3, NULL),
+(166, '2024-10-05 20:26:26', 7, 6, NULL, 3, NULL),
+(167, '2024-10-05 20:26:28', 1, 6, NULL, 3, NULL),
+(168, '2024-10-05 20:26:29', 2, 6, NULL, 3, NULL),
+(169, '2024-10-05 20:26:30', 8, 6, NULL, 3, NULL),
+(170, '2024-10-05 20:26:56', 7, 6, NULL, 3, NULL),
+(171, '2024-10-05 20:26:57', 1, 6, NULL, 3, NULL),
+(172, '2024-10-05 20:26:58', 2, 6, NULL, 3, NULL),
+(173, '2024-10-05 20:27:00', 8, 6, NULL, 3, NULL),
+(174, '2024-10-05 20:27:26', 7, 6, NULL, 3, NULL),
+(175, '2024-10-05 20:27:27', 1, 6, NULL, 3, NULL),
+(176, '2024-10-05 20:27:28', 2, 6, NULL, 3, NULL),
+(177, '2024-10-05 20:27:29', 8, 6, NULL, 3, NULL),
+(178, '2024-10-05 20:27:56', 7, 6, NULL, 3, NULL),
+(179, '2024-10-05 20:27:57', 1, 6, NULL, 3, NULL),
+(180, '2024-10-05 20:27:59', 2, 6, NULL, 3, NULL),
+(181, '2024-10-05 20:28:00', 8, 6, NULL, 3, NULL),
+(182, '2024-10-05 20:28:26', 7, 6, NULL, 3, NULL),
+(183, '2024-10-05 20:28:27', 1, 6, NULL, 3, NULL),
+(184, '2024-10-05 20:28:29', 2, 6, NULL, 3, NULL),
+(185, '2024-10-05 20:28:30', 8, 6, NULL, 3, NULL),
+(186, '2024-10-05 20:28:56', 7, 6, NULL, 3, NULL),
+(187, '2024-10-05 20:28:58', 1, 6, NULL, 3, NULL),
+(188, '2024-10-05 20:28:59', 2, 6, NULL, 3, NULL),
+(189, '2024-10-05 20:29:00', 8, 6, NULL, 3, NULL),
+(190, '2024-10-05 20:29:26', 7, 6, NULL, 3, NULL),
+(191, '2024-10-05 20:29:27', 1, 6, NULL, 3, NULL),
+(192, '2024-10-05 20:29:29', 2, 6, NULL, 3, NULL),
+(193, '2024-10-05 20:29:30', 8, 6, NULL, 3, NULL),
+(194, '2024-10-05 20:29:56', 7, 6, NULL, 3, NULL),
+(195, '2024-10-05 20:29:57', 1, 6, NULL, 3, NULL),
+(196, '2024-10-05 20:29:59', 2, 6, NULL, 3, NULL),
+(197, '2024-10-05 20:30:00', 8, 6, NULL, 3, NULL),
+(198, '2024-10-05 20:30:26', 7, 6, NULL, 3, NULL),
+(199, '2024-10-05 20:30:28', 1, 6, NULL, 3, NULL),
+(200, '2024-10-05 20:30:29', 2, 6, NULL, 3, NULL),
+(201, '2024-10-05 20:30:30', 8, 6, NULL, 3, NULL),
+(202, '2024-10-05 20:30:56', 7, 6, NULL, 3, NULL),
+(203, '2024-10-05 20:30:57', 1, 6, NULL, 3, NULL),
+(204, '2024-10-05 20:31:03', 2, 6, NULL, 3, NULL),
+(205, '2024-10-05 20:31:05', 8, 6, NULL, 3, NULL),
+(206, '2024-10-05 20:31:26', 7, 6, NULL, 3, NULL),
+(207, '2024-10-05 20:31:27', 1, 6, NULL, 3, NULL),
+(208, '2024-10-05 20:31:28', 2, 6, NULL, 3, NULL),
+(209, '2024-10-05 20:31:29', 8, 6, NULL, 3, NULL),
+(210, '2024-10-05 20:31:56', 7, 6, NULL, 3, NULL),
+(211, '2024-10-05 20:31:58', 1, 6, NULL, 3, NULL),
+(212, '2024-10-05 20:31:59', 2, 6, NULL, 3, NULL),
+(213, '2024-10-05 20:32:00', 8, 6, NULL, 3, NULL),
+(214, '2024-10-05 20:32:26', 7, 6, NULL, 3, NULL),
+(215, '2024-10-05 20:32:28', 1, 6, NULL, 3, NULL),
+(216, '2024-10-05 20:32:29', 2, 6, NULL, 3, NULL),
+(217, '2024-10-05 20:32:30', 8, 6, NULL, 3, NULL),
+(218, '2024-10-05 20:32:56', 7, 6, NULL, 3, NULL),
+(219, '2024-10-05 20:32:57', 1, 6, NULL, 3, NULL),
+(220, '2024-10-05 20:32:59', 2, 6, NULL, 3, NULL),
+(221, '2024-10-05 20:33:00', 8, 6, NULL, 3, NULL),
+(222, '2024-10-05 20:33:26', 7, 6, NULL, 3, NULL),
+(223, '2024-10-05 20:33:28', 1, 6, NULL, 3, NULL),
+(224, '2024-10-05 20:33:29', 2, 6, NULL, 3, NULL),
+(225, '2024-10-05 20:33:30', 8, 6, NULL, 3, NULL),
+(226, '2024-10-05 20:33:56', 7, 6, NULL, 3, NULL),
+(227, '2024-10-05 20:33:57', 1, 6, NULL, 3, NULL),
+(228, '2024-10-05 20:33:58', 2, 6, NULL, 3, NULL),
+(229, '2024-10-05 20:34:00', 8, 6, NULL, 3, NULL),
+(230, '2024-10-05 20:34:26', 7, 6, NULL, 3, NULL),
+(231, '2024-10-05 20:34:27', 1, 6, NULL, 3, NULL),
+(232, '2024-10-05 20:34:29', 2, 6, NULL, 3, NULL),
+(233, '2024-10-05 20:34:30', 8, 6, NULL, 3, NULL),
+(234, '2024-10-05 20:34:56', 7, 6, NULL, 3, NULL),
+(235, '2024-10-05 20:34:57', 1, 6, NULL, 3, NULL),
+(236, '2024-10-05 20:34:59', 2, 6, NULL, 3, NULL),
+(237, '2024-10-05 20:35:00', 8, 6, NULL, 3, NULL),
+(238, '2024-10-05 20:35:26', 7, 6, NULL, 3, NULL),
+(239, '2024-10-05 20:35:27', 1, 6, NULL, 3, NULL),
+(240, '2024-10-05 20:35:29', 2, 6, NULL, 3, NULL),
+(241, '2024-10-05 20:35:30', 8, 6, NULL, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -104,9 +256,9 @@ INSERT INTO `devicerecords` (`RecordId`, `DetectedDateTime`, `TypeId`, `DeviceId
 CREATE TABLE `devicestable` (
   `DevicesId` int(11) NOT NULL,
   `IPAddress` varchar(45) NOT NULL,
-  `BarangayId` int(11) NOT NULL,
-  `UserEmail` varchar(255) NOT NULL,
-  `Password` varchar(255) NOT NULL,
+  `BarangayId` int(11) DEFAULT NULL,
+  `UserEmail` varchar(255) DEFAULT NULL,
+  `Password` varchar(255) DEFAULT NULL,
   `StreetAddress` varchar(255) DEFAULT NULL,
   `CreatedDateTime` datetime NOT NULL,
   `DeviceName` varchar(255) DEFAULT NULL
@@ -117,8 +269,10 @@ CREATE TABLE `devicestable` (
 --
 
 INSERT INTO `devicestable` (`DevicesId`, `IPAddress`, `BarangayId`, `UserEmail`, `Password`, `StreetAddress`, `CreatedDateTime`, `DeviceName`) VALUES
-(2, '192.168.1.9', 9151, 'jeanleslie.jlr@gmail.com', 'RECON', '2C', '2024-05-01 05:43:21', NULL),
-(4, '192.168.1.66', 8836, 'userAAA@gmail.com', 'userAAA1234', 'Maselang St.', '2024-05-01 18:32:09', NULL);
+(2, '192.168.1.7', 9151, 'jeanleslie.jlr@gmail.com', 'RECON', '2C', '2024-05-01 05:43:21', 'Device 1'),
+(4, '192.168.1.66', 8836, 'userAAA@gmail.com', 'userAAA1234', 'Maselang St.', '2024-05-01 18:32:09', NULL),
+(5, '192.168.1.233', NULL, NULL, NULL, NULL, '2024-10-05 14:42:10', NULL),
+(6, '192.168.4.134', NULL, NULL, NULL, NULL, '2024-10-05 18:18:38', NULL);
 
 -- --------------------------------------------------------
 
@@ -44007,13 +44161,21 @@ ALTER TABLE `admins`
   ADD KEY `IX_Admins_Password` (`Password`);
 
 --
+-- Indexes for table `detectionstatuses`
+--
+ALTER TABLE `detectionstatuses`
+  ADD PRIMARY KEY (`DetectionStatusId`);
+
+--
 -- Indexes for table `detectiontypes`
 --
 ALTER TABLE `detectiontypes`
   ADD PRIMARY KEY (`DetectionTypeId`),
+  ADD UNIQUE KEY `IX_DetectionTypes_PingCode` (`PingCode`),
   ADD KEY `IX_DetectionTypes_Name` (`Name`),
   ADD KEY `IX_DetectionTypes_Description` (`Description`),
-  ADD KEY `IX_DetectionTypes_CreatedDateTime` (`CreateDateTime`);
+  ADD KEY `IX_DetectionTypes_CreatedDateTime` (`CreateDateTime`),
+  ADD KEY `IX_DetectionTypes_Color` (`Color`);
 
 --
 -- Indexes for table `devicerecords`
@@ -44086,19 +44248,19 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `detectiontypes`
 --
 ALTER TABLE `detectiontypes`
-  MODIFY `DetectionTypeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `DetectionTypeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `devicerecords`
 --
 ALTER TABLE `devicerecords`
-  MODIFY `RecordId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `RecordId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=242;
 
 --
 -- AUTO_INCREMENT for table `devicestable`
 --
 ALTER TABLE `devicestable`
-  MODIFY `DevicesId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `DevicesId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `table_barangay`
