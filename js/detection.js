@@ -7,24 +7,42 @@ function detectionsTableAndCards(){
 
             $('#detectionCards').empty()
             $.each(response, function(i, field) {
-                var row = $('#detection'+field.Name+'Template').html();
+                var row = $('#detectionStatusTemplate').html();
+                row = row.replace(/Number/g,field.RecordId);
+                row = row.replace('DetectionType',field.Name);
                 row = row.replace('DateTime',field.FormattedDateTime);
+                row = row.replace('color',field.TypeColor);
                 row = row.replace('Detection',field.Name)
                 row = row.replace('IPAddress',field.IPAddress)
-                row = row.replace('Location_val',`${field.barangay_name}, ${field.municipality_name}, ${field.province_name}`)
-                row = row.replace('Level_value','01')
+                $location_address = "";
+                if (field.barangay_name != null){
+                     $location_address=`${field.barangay_name}, ${field.municipality_name}, ${field.province_name}`
+                }
+                row = row.replace('Location_val',$location_address)
+                row = row.replace('Level_value',field.TypeDescription)
                 
-                var regex = /drive\.google\.com\/file\/d\/([^\/]+)/;
-                // Use match() to find the matched substring
-                var match = (field.ImageLink).match(regex);
-                // Check if there's a match
-                if (match) {
-                    // Extract the desired substring after 'drive.google.com/file/d/'
-                    var fileId = match[1]; // The captured group ([^\/]+) contains the fileId
-                    row = row.replace('IMG_SOURCE','https://drive.google.com/thumbnail?id='+fileId+'&sz=w1000')
-                } else {
-                    // console.log("No match found.");
-                    row = row.replace('IMG_SOURCE',field.ImageLink)
+                if (field.ImageLink != null){
+                    var regex = /drive\.google\.com\/file\/d\/([^\/]+)/;
+                    // Use match() to find the matched substring
+                    var match = (field.ImageLink).match(regex);
+                    // Check if there's a match
+                    if (match) {
+                        // Extract the desired substring after 'drive.google.com/file/d/'
+                        var fileId = match[1]; // The captured group ([^\/]+) contains the fileId
+                        // console.log("File ID:", fileId);
+                        // row = row.replace('IMG_SOURCE','https://drive.google.com/thumbnail?id='+fileId+'&sz=w1000')
+                        row = row.replace('IMG_SOURCE','https://lh3.googleusercontent.com/d/'+fileId+'=w1000')
+                    } else {
+                        console.log("No match found.");
+                        row = row.replace('IMG_SOURCE',field.ImageLink)
+                    }
+                    $('#detectionCards').append(row)
+
+                }else{
+                    row = row.replace('IMG_SOURCE','');
+
+                    $('#detectionCards').append(row)
+                    $('#cardStatusImg'+ field.RecordId).attr('src','')
                 }
                 $('#detectionCards').append(row)
             });
@@ -59,12 +77,42 @@ function checkForNewDetections() {
         }
     });
 }
+
+var audio; // Declare audio outside the function to persist between calls
+var stopTimeout; // Variable to store the timeout ID
+
 function playSound() {
     try {
-        var audio = new Audio('../digital-alarm-clock.mp3'); // Replace 'notification_sound.mp3' with the path to your sound file
+        if (!audio) {
+            audio = new Audio('../digital-alarm-clock.mp3'); // Initialize the audio only once
+            // Attach event listener to replay when audio ends
+            audio.addEventListener('ended', function() {
+                if (isPlaying) {
+                    audio.currentTime = 0; // Reset playback position
+                    audio.play(); // Replay the audio
+                }
+            });
+        }
+
+        // Check if the sound is already playing
+        if (!audio.paused) {
+            // Clear the previous timeout if the sound is still playing
+            clearTimeout(stopTimeout);
+        }
+
+        // Play the sound
         audio.play();
-    } catch (e){
-        console.error('An error occurred:', error);
+        isPlaying = true;
+
+        // Restart the timeout for stopping the sound after 1 minute (60000 milliseconds)
+        stopTimeout = setTimeout(function() {
+            isPlaying = false; // Stop replaying
+            audio.pause();
+            audio.currentTime = 0; // Reset the playback position
+        }, 60000);
+
+    } catch (e) {
+        console.error('An error occurred:', e);
     }
 }
 

@@ -1,0 +1,28 @@
+
+
+.border-left-smokefire {
+    border-left: 4px solid red; /* or use a color code like #dc3545 */
+}
+.border-left-fire {
+    border-left: 4px solid orange; /* or use a color code like #dc3545 */
+}
+.border-left-smoke {
+    border-left: 4px solid gray; /* or use a color code like #dc3545 */
+}
+.bg-smokefire {
+    background-color: red; /* or use a color code like #dc3545 */
+    color: white; /* Optional: to make the text stand out */
+}
+.bg-fire {
+    background-color: orange; /* or use a color code like #dc3545 */
+    color: white; /* Optional: to make the text stand out */
+}
+.bg-smoke {
+    background-color: gray; /* or use a color code like #dc3545 */
+    color: white; /* Optional: to make the text stand out */
+}
+.bg-none {
+    /* background-color: lightgreen; //or use a color code like #dc3545 */
+    color: green; /* Optional: to make the text stand out */
+}
+

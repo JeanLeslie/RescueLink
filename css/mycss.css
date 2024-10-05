@@ -20,3 +20,13 @@ form.user .form-select {
     background-position: center;
     background-size: cover;
 }
+
+.border-left-red {
+    border-left: 4px solid red; /* or use a color code like #dc3545 */
+}
+.border-left-yellow {
+    border-left: 4px solid yellow; /* or use a color code like #dc3545 */
+}
+.border-left-blue {
+    border-left: 4px solid blue; /* or use a color code like #dc3545 */
+}

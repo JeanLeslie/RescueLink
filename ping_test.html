@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatic Update</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function updatePinB() {
+            $.ajax({
+                url: 'config/device_connect.php', // Adjust the URL as needed
+                method: 'GET',
+                success: function(response) {
+                    // Update the page with the response from NodeMCU
+                    $('#responseContainer').html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ', status, error);
+                }
+            });
+        }
+
+        // Automatically update every 5 seconds
+        $(document).ready(function() {
+            setInterval(function() {
+                const pinB_value = 5; // Set the pinB value you want to send
+                updatePinB(pinB_value);
+            }, 500); // 5000 milliseconds = 5 seconds
+        });
+    </script>
+</head>
+<body>
+    <h1>Automatic Update Example</h1>
+    <div id="responseContainer">
+        <!-- Response from NodeMCU will be displayed here -->
+    </div>
+</body>
+</html>

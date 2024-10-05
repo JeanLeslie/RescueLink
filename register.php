@@ -65,7 +65,7 @@
 		} else {
 			// escape sql chars
 			$email = mysqli_real_escape_string($conn, $_POST['Email']);
-            $ip_add = mysqli_real_escape_string($conn, $_POST['IPAddress']);;
+            $ip_add = mysqli_real_escape_string($conn, $_POST['IPAddress']);
             $barangay = mysqli_real_escape_string($conn, $_POST['Barangay']);
             $password = mysqli_real_escape_string($conn, $_POST['Password']);
             $streetAddress = mysqli_real_escape_string($conn, $_POST['StreetAddress']);
