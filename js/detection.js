@@ -1,3 +1,6 @@
+
+var GDriveLink = "https://drive.google.com/drive/folders/1irdyJCZKWUfIY2bHdx47mvAlhaYMYFI4?usp=sharing"
+
 function detectionsTableAndCards(){
     $.ajax({
         url: '../controllers/get_detections.php',
@@ -20,6 +23,7 @@ function detectionsTableAndCards(){
                 }
                 row = row.replace('Location_val',$location_address)
                 row = row.replace('Level_value',field.TypeDescription)
+                row = row.replace('GDrive_Link',GDriveLink)
                 
                 if (field.ImageLink != null){
                     var regex = /drive\.google\.com\/file\/d\/([^\/]+)/;
@@ -39,10 +43,11 @@ function detectionsTableAndCards(){
                     $('#detectionCards').append(row)
 
                 }else{
-                    row = row.replace('IMG_SOURCE','');
+                    row = row.replace('IMG_SOURCE','..\\img\\'+(field.Name).toLowerCase()+'.jpg');
+
 
                     $('#detectionCards').append(row)
-                    $('#cardStatusImg'+ field.RecordId).attr('src','')
+                    // $('#cardStatusImg'+ field.RecordId).attr('src','')
                 }
                 $('#detectionCards').append(row)
             });

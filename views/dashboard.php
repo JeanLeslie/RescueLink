@@ -103,7 +103,10 @@ $title = 'Rescue Link - Dashboard' ;
                 </div>
                 <div class="card-body">
                     <div class="text-center"style="min-height: 16rem"  id="cardStatusImgNumber">
-                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="max-height: 15rem;" src="IMG_SOURCE" alt="...">
+                        
+                    <a href = GDrive_Link target="_blank">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style=" max-height: 15rem;" src="IMG_SOURCE" alt="..." >
+                    </a>
                     </div>
                     <p><b>Date / Time: </b> DateTime</br>
                     <b>IP Address: </b>IPAddress</br>
@@ -146,7 +149,9 @@ $title = 'Rescue Link - Dashboard' ;
                 </div>
                 <div class="card-body">
                     <div class="text-center" style="min-height: 16rem">
-                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style=" max-height: 15rem;" src="IMG_SOURCE" alt="...">
+                        <a href = GDrive_Link target="_blank">
+                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style=" max-height: 15rem;" src="IMG_SOURCE" alt="...">
+                        </a>
                     </div>
                     <p><b>Date / Time: </b> DateTime</br>
                     <b>IP Address: </b>IPAddress</br>
@@ -176,5 +181,5 @@ $title = 'Rescue Link - Dashboard' ;
     <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <!-- Page level custom scripts -->
     <script src="../js/demo/datatables-demo.js"></script>
-    <script src= "../js/dashboard.js?v=1"></script>
+    <script src= "../js/dashboard.js?v=3"></script>
 </section>
