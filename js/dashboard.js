@@ -8,6 +8,9 @@ setInterval(checkForNewRecords, 5000); // Adjust the interval as needed
 // setInterval(checkForUpdates, 5000); // Adjust the interval as needed
 
 var firstDataTableRun = true;
+var GDriveLink = "https://drive.google.com/drive/folders/1irdyJCZKWUfIY2bHdx47mvAlhaYMYFI4?usp=sharing"
+
+
 function dashboardTableAndCards(){
     console.log('updating...')
     $.ajax({
@@ -31,8 +34,9 @@ function dashboardTableAndCards(){
                     if (field.barangay_name != null){
                          $location_address = `${field.barangay_name}, ${field.municipality_name}, ${field.province_name}`
                     }
+                    
 
-                    if (field.Name == 'Fire' && !fireOG){
+                    if (field.Name.toLowerCase().indexOf("fire") >= 0 && !fireOG){
                         $('#divOnGoingFire')
                             .removeClass('border-left-danger')
                             .addClass('border-left-dark bg-danger text-white');
@@ -41,7 +45,7 @@ function dashboardTableAndCards(){
                         $('#fire_Time').text(field.FormattedDateTime)
                         fireOG = true;
                     }
-                    if (field.Name == 'Smoke' && !smokeOG){
+                    if (field.Name.toLowerCase().indexOf("smoke") >= 0  && !smokeOG){
                         $('#divOnGoingSmoke')
                             .removeClass('border-left-success')
                             .addClass('border-left-dark bg-success text-white');
@@ -92,7 +96,7 @@ function dashboardTableAndCards(){
                     }
                     row = row.replace('Location_val',$location_address)
                     row = row.replace('Level_value',field.TypeDescription)
-
+                    row = row.replace('GDrive_Link',GDriveLink)
                     if (field.ImageLink != null){
                         var regex = /drive\.google\.com\/file\/d\/([^\/]+)/;
                         // Use match() to find the matched substring
@@ -111,10 +115,10 @@ function dashboardTableAndCards(){
                         $('#divCardDetected').append(row)
 
                     }else{
-                        row = row.replace('IMG_SOURCE','');
+                        row = row.replace('IMG_SOURCE','..\\img\\'+(field.Name).toLowerCase()+'.jpg');
 
                         $('#divCardDetected').append(row)
-                        $('#cardStatusImg'+ field.RecordId).remove()
+                        // $('#cardStatusImg'+ field.RecordId).remove()
                     }
 
                     // var row = $('#card'+field.Name+'Template').html();

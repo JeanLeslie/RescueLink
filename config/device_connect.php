@@ -79,11 +79,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Get DetectionStatusId
-    $sql_statusId = "SELECT DetectionStatusId FROM detectionstatuses WHERE StatusCode = 'OG'";
-    $result_statusId = mysqli_query($conn, $sql_statusId);
+    $OGsql_statusId = "SELECT DetectionStatusId FROM detectionstatuses WHERE StatusCode = 'OG'";
+    $OGresult_statusId = mysqli_query($conn, $OGsql_statusId);
+    $Fsql_statusId = "SELECT DetectionStatusId FROM detectionstatuses WHERE StatusCode = 'F'";
+    $Fresult_statusId = mysqli_query($conn, $Fsql_statusId);
 
-    if ($result_statusId) {
-        $detectionStatusId = mysqli_fetch_assoc($result_statusId)['DetectionStatusId'];
+    if ($OGresult_statusId) {
+        $OGdetectionStatusId = mysqli_fetch_assoc($OGresult_statusId)['DetectionStatusId'];
+       
+    } else {
+        echo 'query error: ' . mysqli_error($conn);
+    }
+    if ($Fresult_statusId) {
+        $FdetectionStatusId = mysqli_fetch_assoc($Fresult_statusId)['DetectionStatusId'];
        
     } else {
         echo 'query error: ' . mysqli_error($conn);
@@ -95,8 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $sql_last_record = "SELECT recordId, typeId
     FROM devicerecords 
-    WHERE DeviceId = $devicesId AND DetectionStatusId = $detectionStatusId
-    ORDER BY ModifiedDateTime DESC 
+    WHERE DeviceId = $devicesId AND DetectionStatusId = $OGdetectionStatusId
+    ORDER BY recordId DESC 
     LIMIT 1";
 
     $result_last_record = mysqli_query($conn, $sql_last_record);
@@ -104,17 +112,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result_last_record) {
         $lastDevice = mysqli_fetch_assoc($result_last_record);
         if ($lastDevice) {
-            if($lastDevice['typeId'] == $detectionTypeId){
+            $lastRecordId = $lastDevice['recordId'];
+            $lastTypeId = $lastDevice['typeId'];
+            if($lastTypeId == $detectionTypeId){
                 echo 'Last DevicesId with the same DetectionTypeId: ' . $lastDevice['recordId'];
 
             } else {
                 // Now perform the INSERT with retrieved IDs
                 $sql_records = "INSERT INTO devicerecords (DetectedDateTime, TypeId, DeviceId, ImageLink,DetectionStatusId,ModifiedDateTime)
-                VALUES ('$currentDateTime', $detectionTypeId, $devicesId, NULL, $detectionStatusId, NULL)";
+                VALUES ('$currentDateTime', $detectionTypeId, $devicesId, NULL, $OGdetectionStatusId, NULL)";
     
                 if (mysqli_query($conn, $sql_records)) {
-                // Success
-                // header('Location: ../ping_test.html');
+                    echo "need to update_records";
+                    $update_records = "UPDATE devicerecords 
+                    SET DetectionStatusId = $FdetectionStatusId
+                    WHERE RecordID = $lastRecordId";
+                    echo "update_records: ". $update_records;
+                    if (mysqli_query($conn, $update_records)) {
+                    } else {
+                    echo 'query error: ' . mysqli_error($conn);
+                    }
                 } else {
                 echo 'query error: ' . mysqli_error($conn);
                 }
@@ -122,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // Now perform the INSERT with retrieved IDs
             $sql_records = "INSERT INTO devicerecords (DetectedDateTime, TypeId, DeviceId, ImageLink,DetectionStatusId,ModifiedDateTime)
-            VALUES ('$currentDateTime', $detectionTypeId, $devicesId, NULL, $detectionStatusId, NULL)";
+            VALUES ('$currentDateTime', $detectionTypeId, $devicesId, NULL, $OGdetectionStatusId, NULL)";
 
             if (mysqli_query($conn, $sql_records)) {
             // Success
