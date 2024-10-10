@@ -5,7 +5,7 @@ function detectionsTableAndCards(){
     $.ajax({
         url: '../controllers/get_detections.php',
         type: 'GET',
-        dataType: 'json',
+        //dataType: 'json',
         success: function(response) {
 
             $('#detectionCards').empty()
